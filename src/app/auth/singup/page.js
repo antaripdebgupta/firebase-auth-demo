@@ -1,23 +1,49 @@
 "use client"
 import React,{memo,useState,useCallback} from 'react'
 import Link from 'next/link'
-import { Form, Input, Button} from "antd";
+import { useRouter } from 'next/navigation'
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth'
+import { auth } from '@/lib/firebase';
+import { Form, Input, Button, notification } from "antd";
 import { MdOutlineEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FcGoogle } from "react-icons/fc";
 import {FaRegUser, FaFacebook } from "react-icons/fa";
 
 function page() {
-
+  const router = useRouter()
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [verifiedPassword, setVerifiedPassword] = useState("");
 
+  const [ createUserWithEmailAndPassword ] = useCreateUserWithEmailAndPassword(auth)
+
+  const resetForm = useCallback(() => {
+    setName("");
+    setEmail("");
+    setPassword("");
+    setVerifiedPassword("");
+  }, []);
+
+  const signup = async () => {
+    try {
+      const res = await createUserWithEmailAndPassword(email,password)
+      resetForm();
+      notification.success({
+        message: "Success",
+        description: "You have successfully signed up!",
+      });
+      router.push('/auth/login')
+    }catch(error) {
+      console.log("XXXXX error", error)
+    }
+  }
+
   return (
     <div className="min-h-screen flex flex-col justify-center items-center gap-2 top-0 font-sans dark:bg-dark dark:text-white">
       <h1 className="text-3xl font-bold mb-2">Sing Up</h1>
-      <Form className="taxt-bold w-96">
+      <Form className="taxt-bold w-96" onFinish={signup}>
 
       <Form.Item
           name="name"
