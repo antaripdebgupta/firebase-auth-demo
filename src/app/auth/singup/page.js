@@ -138,7 +138,7 @@ function page() {
          </Form.Item>
 
           <Form.Item>
-              <Button ype="primary" htmlType="submit" className="w-96 h-10 mt-4 dark:bg-white">
+              <Button htmlType="submit" className="w-96 h-10 mt-4 dark:bg-white">
                 Sign Up
               </Button>
           </Form.Item>

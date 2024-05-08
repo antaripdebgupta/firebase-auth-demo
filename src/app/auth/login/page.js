@@ -1,6 +1,10 @@
 "use client"
-import React,{memo} from 'react'
+import React,{memo,useState,useCallback} from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth'
+import { useIfLoggedIn } from '@/hooks/useIfLoggedIn'
+import { auth } from '@/lib/firebase'
 import { Form, Input, Button } from "antd";
 import { MdOutlineEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
@@ -8,10 +12,35 @@ import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 
 function page() {
+  const router = useRouter()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  useIfLoggedIn();
+
+  const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth)
+
+  const resetForm = useCallback(() => {
+    setEmail("");
+    setPassword("");
+  }, []);
+
+  const singIn = async () => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(email,password);
+      //console.log("log",userCredential);
+      const uuid = userCredential.user.uid;
+      localStorage.setItem("authToken", uuid);
+      resetForm();
+      router.push("/")
+    }catch{
+      console.log("Login error", error)
+    }
+  }
+
   return (
     <div className="h-screen flex flex-col align-center items-center  gap-2 top-0 pt-36 font-sans dark:text-white dark:bg-dark">
       <h1 className="text-3xl font-bold mb-2">Login</h1>
-      <Form className="text-bold w-96">
+      <Form className="text-bold w-96" onFinish={singIn}>
 
         <Form.Item
           name="email"
@@ -26,13 +55,14 @@ function page() {
             },
           ]}
         >
-        
-        <Input
-          size="large"
-          placeholder="Email"
-          prefix={<MdOutlineEmail />}
-          className="w-96 h-10"
-        />     
+          <Input
+            size="large"
+            placeholder="Email"
+            prefix={<MdOutlineEmail />}
+            className="w-96 h-10"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />     
         </Form.Item>
 
         <Form.Item
@@ -48,6 +78,8 @@ function page() {
               placeholder="Password"
               prefix={<RiLockPasswordLine />}
               className="w-96 h-10"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />             
         </Form.Item>
 
@@ -56,7 +88,7 @@ function page() {
         </div>
 
           <Form.Item>
-              <Button className="w-96 h-10 mt-4 dark:bg-white">
+              <Button htmlType="submit" className="w-96 h-10 mt-4 dark:bg-white">
                 Log In
               </Button>
           </Form.Item>
