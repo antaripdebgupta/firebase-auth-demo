@@ -10,7 +10,10 @@ import Sidebar from './Sidebar'
 
 function Navbar() {
   const router = useRouter()
-  const token = localStorage.getItem("authToken");
+  let token = null;
+  if(typeof window !== 'undefined') {
+    token = localStorage.getItem("authToken");
+  } 
   const sectionLink = [
       {name:"Home",link:"/"},
       {name:"About",link:"/content/about"},
