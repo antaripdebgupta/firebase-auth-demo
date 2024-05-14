@@ -16,7 +16,6 @@ function page() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   useIfLoggedIn();
-
   const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth)
 
   const resetForm = useCallback(() => {
@@ -33,7 +32,7 @@ function page() {
       resetForm();
       router.push("/")
     }catch{
-      console.log("Login error", error)
+      console.log("Login error")
     }
   }
 
