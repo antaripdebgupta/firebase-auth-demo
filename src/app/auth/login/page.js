@@ -83,7 +83,7 @@ function page() {
         </Form.Item>
 
         <div>
-          <Link href="/" rel="preload">Forgot Password?</Link>
+          <Link href="/auth/reset" rel="preload">Forgot Password?</Link>
         </div>
 
           <Form.Item>
