@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth'
 import { useIfLoggedIn } from '@/hooks/useIfLoggedIn'
 import { auth } from '@/lib/firebase'
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, notification } from "antd";
 import { MdOutlineEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FcGoogle } from "react-icons/fc";
@@ -31,8 +31,11 @@ function page() {
       localStorage.setItem("authToken", uuid);
       resetForm();
       router.push("/")
-    }catch{
-      console.log("Login error")
+    }catch(error){
+      notification.error ({
+        message: "Error",
+        description: "Invalid Credentials",
+      })
     }
   }
 
