@@ -1,5 +1,6 @@
 import "./globals.css";
 import Navbar from "../components/Navbar";
+import { AuthContextProvider } from "@/lib/authContext";
 
 export const metadata = {
   title: "Firebase auth",
@@ -10,10 +11,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <Navbar/>
-        <main className="relative overflow-x-hidden dark:bg-dark">
-          {children}
-        </main>
+        <AuthContextProvider>
+          <Navbar/>
+          <main className="relative overflow-x-hidden dark:bg-dark">
+            {children}
+          </main>
+        </AuthContextProvider>
         </body>
     </html>
   );

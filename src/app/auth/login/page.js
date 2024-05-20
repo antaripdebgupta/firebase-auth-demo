@@ -1,10 +1,11 @@
 "use client"
-import React,{memo,useState,useCallback} from 'react'
+import React,{memo,useState,useCallback, useEffect} from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth'
 import { useIfLoggedIn } from '@/hooks/useIfLoggedIn'
 import { auth } from '@/lib/firebase'
+import { UserAuth } from '@/lib/authContext'
 import { Form, Input, Button, notification } from "antd";
 import { MdOutlineEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
@@ -17,6 +18,8 @@ function page() {
   const [password, setPassword] = useState("");
   useIfLoggedIn();
   const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth)
+  const { user, googleSignIn} = UserAuth();
+  const [loading, setLoading] = useState(true);
 
   const resetForm = useCallback(() => {
     setEmail("");
@@ -38,6 +41,23 @@ function page() {
       })
     }
   }
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await googleSignIn()
+        router.push("/")
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      setLoading(false);
+    };
+    checkAuthentication();
+  }, [user]);
 
   return (
     <div className="h-screen flex flex-col align-center items-center  gap-2 top-0 pt-36 font-sans dark:text-white dark:bg-dark">
@@ -106,7 +126,7 @@ function page() {
           <hr className="bg-black w-12 ml-2"/>
         </div>
         <div className="flex justify-center mt-4 gap-8">
-          <Button className=" w-44 h-10 dark:bg-white" icon={<FcGoogle/>}>Google</Button>
+          <Button className=" w-44 h-10 dark:bg-white" icon={<FcGoogle/>} onClick={handleGoogleSignIn}>Google</Button>
           <Button className="w-44 h-10 dark:bg-white" icon={<FaFacebook className="fill-blue-500"/>}>Facebook</Button>
         </div>
 

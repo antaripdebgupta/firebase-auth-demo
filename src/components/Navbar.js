@@ -3,7 +3,8 @@ import Link from 'next/link'
 import { usePathname} from 'next/navigation'
 import React,{memo, useState, useEffect} from 'react'
 import { useRouter } from 'next/navigation'
-import { Button } from 'antd'
+import { UserAuth } from '@/lib/authContext'
+import { Button } from 'antd';
 import { AiOutlineUser } from "react-icons/ai";
 import Theme from './Theme';
 import Sidebar from './Sidebar'
@@ -12,6 +13,7 @@ function Navbar() {
   const router = useRouter()
   const pathname = usePathname();
   const [token, setToken] = useState(null);
+  const { googleLogOut } = UserAuth();
 
   useEffect(() => {
     const authToken = localStorage.getItem('authToken');
@@ -35,6 +37,7 @@ function Navbar() {
   }
 
   const handleLogout = () => {
+    googleLogOut();
     localStorage.removeItem('authToken');
     router.push('/');
   };

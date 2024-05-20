@@ -1,6 +1,7 @@
 import React,{memo, useState, useEffect} from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
+import { UserAuth } from '@/lib/authContext'
 import { IoReorderThreeOutline,IoChevronForwardOutline } from "react-icons/io5";
 import Theme from './Theme';
 
@@ -9,6 +10,7 @@ const Sidebar = () => {
   const pathname = usePathname();
   const [isOpen,setIsOpen] = useState(false);
   const [token, setToken] = useState(null);
+  const { googleLogOut } = UserAuth();
 
   useEffect(() => {
     const authToken = localStorage.getItem('authToken');
@@ -32,6 +34,7 @@ const Sidebar = () => {
   }
 
   const handleLogout = () => {
+    googleLogOut();
     localStorage.removeItem('authToken');
     router.push('/');
     closeSidebar();
@@ -55,7 +58,7 @@ const Sidebar = () => {
             <ul className="flex flex-col items-start justify-center h-full text-nowrap">
             {linksToRender.map(({ name, link }) => (
                 <li key={name} className={` flex justify-center items-center px-2 text-white fill-none outline-none outline-transparent outline-0 p-2 `}>
-                  <Link href={link} rel="preload" className={`${isActive(link)} outline-2 focus:outline-green-500 `}>
+                  <Link href={link} rel="preload" className={`${isActive(link)} outline-2 focus:outline-green-500 `} onClick={closeSidebar}>
                     {name}
                   </Link>
                 </li>
