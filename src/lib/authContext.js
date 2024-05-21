@@ -20,11 +20,9 @@ export const AuthContextProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
+      if (currentUser && currentUser.providerData[0].providerId === 'google.com') {
         //console.log("Apps",currentUser.uid)
         localStorage.setItem("authToken", currentUser.uid);
-      }else {
-        localStorage.removeItem("authToken");
       }
       setUser(currentUser);
     });
@@ -32,7 +30,7 @@ export const AuthContextProvider = ({ children }) => {
   }, [user,app]);
 
   return (
-    <AuthContext.Provider value={{ user, googleSignIn, googleLogOut}}>
+    <AuthContext.Provider value={{ user, googleSignIn, googleLogOut }}>
       {children}
     </AuthContext.Provider>
   );

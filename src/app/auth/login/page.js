@@ -45,7 +45,7 @@ function page() {
   const handleGoogleSignIn = async () => {
     try {
       await googleSignIn()
-        router.push("/")
+      router.push("/")
     } catch (error) {
       console.log(error);
     }
