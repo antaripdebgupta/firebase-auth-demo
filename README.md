@@ -9,7 +9,7 @@ It implements both email/password and Google sign-in methods.
 - Google Authentication
 - User Registration
 - User Login
-- Reset Password
+- Reset Password | Email Verification
 - Protected Routes
 
 ## Prerequisites

@@ -2,7 +2,7 @@
 import React,{memo,useState,useCallback} from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth'
+import { useCreateUserWithEmailAndPassword , useSendEmailVerification} from 'react-firebase-hooks/auth'
 import { auth } from '@/lib/firebase';
 import { Form, Input, Button, notification } from "antd";
 import { MdOutlineEmail } from "react-icons/md";
@@ -18,6 +18,7 @@ function page() {
   const [verifiedPassword, setVerifiedPassword] = useState("");
 
   const [ createUserWithEmailAndPassword ] = useCreateUserWithEmailAndPassword(auth)
+  const [ sendEmailVerification ] = useSendEmailVerification(auth)
 
   const resetForm = useCallback(() => {
     setName("");
@@ -28,11 +29,12 @@ function page() {
 
   const signup = async () => {
     try {
-      const res = await createUserWithEmailAndPassword(email,password)
+      const userCredential = await createUserWithEmailAndPassword(email,password)
+      await sendEmailVerification(userCredential.user)
       resetForm();
       notification.success({
         message: "Success",
-        description: "You have successfully signed up!",
+        description: "You have successfully signed up! Please check your email to verify your account.",
       });
       router.push('/auth/login')
     }catch(error) {
