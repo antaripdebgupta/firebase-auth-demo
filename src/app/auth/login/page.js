@@ -37,7 +37,7 @@ function page() {
     }catch(error){
       notification.error ({
         message: "Error",
-        description: "Invalid Credentials",
+        description: "Invalid Credentials or Network Issue",
       })
     }
   }
@@ -47,7 +47,7 @@ function page() {
       await googleSignIn()
       router.push("/")
     } catch (error) {
-      console.log(error);
+      console.log('GoogleSignIn Error:',error);
     }
   };
 

@@ -109,7 +109,7 @@ function page() {
 
         <Form.Item
           name="confirm"
-          ependencies={["password"]}
+          dependencies={["password"]}
           hasFeedback
           rules={[
             {
