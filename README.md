@@ -7,8 +7,8 @@ It implements both email/password and Google sign-in methods.
 
 - Email/Password Authentication
 - Google Authentication
-- User Registration
-- User Login
+- Phone Number Authentication
+- User Registration & Login
 - Reset Password | Email Verification
 - Protected Routes
 
