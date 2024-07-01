@@ -129,7 +129,7 @@ function page() {
           <Button className=" w-44 h-10 dark:bg-white" icon={<FcGoogle/>} onClick={handleGoogleSignIn}>Google</Button>
           <Button className="w-44 h-10 dark:bg-white" icon={<FaFacebook className="fill-blue-500"/>}>Facebook</Button>
         </div>
-
+        <p className='mt-4 mr-40'><Link href="/auth/phone" rel="preload">Sing in with phone number -</Link></p>
     </div>
   )
 }
